@@ -109,6 +109,7 @@ function controlPoints(){
     //when right mouse is clicked set the selected items location to mouse location
     if(mouse.presses("right")){
         for(let i=0; i<itemsGroup.length; i++){
+            itemsGroup[i].mineTarget = null;
             if(itemsGroup[i].selected == true){
                 //console.log("move");
                 itemsGroup[i].locationX = mouseX;
@@ -133,10 +134,18 @@ function controlPoints(){
             let distance = dist(currentItem.x, currentItem.y, currentItem.locationX, currentItem.locationY);
             if(distance > 40){
                 currentItem.moveTowards(currentItem.locationX, currentItem.locationY, 0.05);
-            }else if(itemsGroup[i].mineTarget != null){
-                console.log("arrived at resource");
-                //console.log(itemsGroup[i].mineTarget.value);
-                mineResources(itemsGroup[i]);
+            } 
+
+            //checks if there is variable for the mine target
+            if(currentItem.mineTarget != null){
+                //gets distance from mine target
+                distance = dist(currentItem.x, currentItem.y, currentItem.mineTarget.x, currentItem.mineTarget.y);
+                //if close enough to mine target allow mining
+                if(distance < 40){
+                    console.log("arrived at resource");
+                    //console.log(itemsGroup[i].mineTarget.value);
+                    mineResources(currentItem);
+                }
             }
         }
     }
