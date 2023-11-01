@@ -4,6 +4,7 @@
 let selectBox;
 let spawner;
 let minionMovement;
+let shops = new Shops;
 
 //Groups
 let resourceGroup;
@@ -21,9 +22,12 @@ function setup(){
     //classes setup
     minionMovement.setup();
     spawner.setup();
-
+    
     //creates gold desposits
     createResources();
+
+    //shops setup
+    shops.setup();
 }
 
 function draw(){
@@ -41,6 +45,8 @@ function draw(){
     minionMovement.draw();
     //displays gold UI
     minionMovement.displayUI();
+
+    shops.draw();
 }
 
 function createResources(){

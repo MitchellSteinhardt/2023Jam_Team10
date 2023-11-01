@@ -8,6 +8,6 @@ body {
 #container {
     /* css that effects the container holding main. */
     display:flex;
-    justify-content:center;
+    justify-content:left;
     align-items:center;
 }
