@@ -1,33 +1,30 @@
 "use strict";
 
 //Classes
-let selectBox;
-let spawner;
-let minionMovement;
-let shops = new Shops;
+let selectBox = new selectionBox();
+let spawner = new spawnManager();
+let minionMovement = new minionController();
+//let shops = new Shops;    //This is removed as 'spawnManager' handles purchases
 
 //Groups
 let resourceGroup;
+
+function preload(){
+    spawner.preload();
+}
 
 function setup(){
     new Canvas(800,800);
     //declaring groups
     resourceGroup = new Group();
     
-    //settings classes
-    minionMovement = new minionController(resourceGroup);
-    spawner = new spawnManager();
-    selectBox = new selectionBox(minionMovement.itemsGroup);
-
     //classes setup
-    minionMovement.setup();
     spawner.setup();
+    minionMovement.setup(resourceGroup);
+    //shops.setup();
     
     //creates gold desposits
     createResources();
-
-    //shops setup
-    shops.setup();
 }
 
 function draw(){
@@ -35,26 +32,29 @@ function draw(){
 
     //used to spawn new miners, will be replaced with button controls
     if(kb.presses("d")){
-        minionMovement.itemsGroup.push(spawner.spawnMiner());
+        minionMovement.minionGroup.push(spawner.spawnMiner());
     }
 
+    summonControls();
+
     //draws green selection box
-    selectBox.draw(minionMovement.itemsGroup);
+    selectBox.draw();
     
     //controls minion movement
     minionMovement.draw();
     //displays gold UI
     minionMovement.displayUI();
 
-    shops.draw();
+    //shops.draw();
 }
 
 function createResources(){
     for(let i = 0; i<6; i++){
         let newResource = new Sprite();
         newResource.d = 30;
-        newResource.x = random(width);
-        newResource.y = random(height);
+        let gap = newResource.d/2;
+        newResource.x = random(gap, width - gap);
+        newResource.y = random(60, height - gap);
         newResource.color = "green";
         newResource.collider = "s";
 
@@ -62,5 +62,17 @@ function createResources(){
         newResource.value = 500;
 
         resourceGroup.push(newResource);
+    }
+}
+
+function summonControls(){
+    if(kb.presses("1")){
+        spawner.requestSpawn(0);
+    }else if(kb.presses("2")){
+        spawner.requestSpawn(1);
+    }else if(kb.presses("3")){
+        spawner.requestSpawn(2);
+    }else if(kb.presses("4")){
+        spawner.requestSpawn(3);
     }
 }

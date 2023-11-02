@@ -1,32 +1,33 @@
 class minionController{
-    constructor(rGroup){
-        this.itemsGroup;
-        this.resourceGroup = rGroup;
-        this.resources = 0;
+    constructor(){
+        this.minionGroup;
+        this.resourceGroup;
+        this.resources = 100;
     }
 
     preload(){
 
     }
 
-    setup(){
-        this.itemsGroup = new Group();
+    setup(rGroup){
+        this.resourceGroup = rGroup;
+        this.minionGroup = new Group();
     }
 
     draw(){
             //when right mouse is clicked set the selected items location to mouse location
     if(mouse.presses("right")){
-        for(let i=0; i<this.itemsGroup.length; i++){
-            if(this.itemsGroup[i].selected == true){
-                this.itemsGroup[i].mineTarget = null;
+        for(let i=0; i<this.minionGroup.length; i++){
+            if(this.minionGroup[i].selected == true){
+                this.minionGroup[i].mineTarget = null;
                 //console.log("move");
-                this.itemsGroup[i].locationX = mouseX;
-                this.itemsGroup[i].locationY = mouseY;
+                this.minionGroup[i].locationX = mouseX;
+                this.minionGroup[i].locationY = mouseY;
 
                 for(let k=0; k<this.resourceGroup.length; k++){
                     if(this.resourceGroup[k].mouse.presses("right")){
-                        console.log("resource selected");
-                        this.itemsGroup[i].mineTarget = this.resourceGroup[k];
+                        //console.log("resource selected");
+                        this.minionGroup[i].mineTarget = this.resourceGroup[k];
                     }
                 }
             }
@@ -34,8 +35,8 @@ class minionController{
     }
 
     //continues moving items to designated location
-    for(let i=0; i<this.itemsGroup.length; i++){
-        let currentItem = this.itemsGroup[i];
+    for(let i=0; i<this.minionGroup.length; i++){
+        let currentItem = this.minionGroup[i];
 
         if(currentItem.locationX != null){
             //checks if there is variable for the mine target

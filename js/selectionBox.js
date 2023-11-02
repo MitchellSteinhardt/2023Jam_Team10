@@ -1,6 +1,6 @@
 class selectionBox {
-    constructor(itemGroup){
-        this.items = itemGroup;
+    constructor(){
+        this.minions;
         this.selectBox;
         this.startedSelect = false;
         this.selectBoxX;
@@ -18,13 +18,13 @@ class selectionBox {
     /*
     *   Creates a selection box
     *   Controlled by clicking and dragging mouse
-    *   Items stay selected once mouse is released
+    *   Minions stay selected once mouse is released
     */
-    draw(it){
-        this.items = it;
+    draw(){
+        this.minions = minionMovement.minionGroup;
         //if the mouse is clicked starts selection box
         if(this.startedSelect == false && mouse.presses()){
-            console.log("working");
+            //console.log("working");
             this.startedSelect = true;
 
             //initiates selection box
@@ -35,7 +35,7 @@ class selectionBox {
 
             this.selectBox.collider = "k";
 
-            this.selectBox.overlaps(this.items);
+            this.selectBox.overlaps(this.minions);
 
             //sets inital clicked spot
             this.selectBoxX = mouseX;
@@ -68,13 +68,13 @@ class selectionBox {
 
     selectionCheck(){
             //loops through all selectible items
-        for(let i=0; i<this.items.length; i++){
-            if(this.selectBox.overlapping(this.items[i])){
-                this.items[i].selected = true;
-                this.items[i].color = "red";
+        for(let i=0; i<this.minions.length; i++){
+            if(this.selectBox.overlapping(this.minions[i])){
+                this.minions[i].selected = true;
+                this.minions[i].color = "red";
             }else{
-                this.items[i].selected = false;
-                this.items[i].colour = "blue";
+                this.minions[i].selected = false;
+                this.minions[i].colour = "blue";
             }
         }
     }
