@@ -1,3 +1,12 @@
+
+/* 
+*   NO NEED TO KEEP
+*   buttons will be handled by a UI class
+*   spawning and purchase check is handled by 'spawner.js'
+*/
+
+
+
 class Shops {
   constructor() {
     this.missileOneButton;

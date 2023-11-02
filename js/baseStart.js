@@ -1,5 +1,14 @@
 "use strict";
 
+/* 
+*   NO NEED TO KEEP
+*   All code here has been split into:
+*       selectBox.js
+*       minionControls.js
+*       spawner.js
+*/
+
+
 
 //Selection Box Variables
 let selectBox;
