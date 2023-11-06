@@ -96,6 +96,7 @@ class spawnManager {
         newAttacker.locationX = null;
         newAttacker.locationY = null;
         newAttacker.attackTarget = null;
+        newAttacker.lookingForEnemy = true;
         newAttacker.countDown = newAttacker.attackDelay;
         
         //adds new minion to the minion group in 'minionControls.js'

@@ -4,10 +4,15 @@
 let selectBox = new selectionBox();
 let spawner = new spawnManager();
 let minionMovement = new minionController();
+let waveManager = new waveControls();
 //let shops = new Shops;    //This is removed as 'spawnManager' handles purchases
 
 //Groups
 let resourceGroup;
+
+//UI variables
+let menuOpen = false;
+let smallMinerBut, bigMinerBut, smallAttackerBut, bigAttackerBut;
 
 function preload(){
     spawner.preload();
@@ -27,10 +32,14 @@ function setup(){
     
     //creates gold desposits
     createResources();
+
+    uiSetup();
+    waveManager.setup();
 }
 
 function draw(){
-    background(200);
+    //background(200);    //default
+    background(16,103,114); //water
 
     summonControls();
 
@@ -43,6 +52,9 @@ function draw(){
     minionMovement.displayUI();
 
     //shops.draw();
+
+    uiDraw();
+    waveManager.draw();
 }
 
 function createResources(){
@@ -71,5 +83,47 @@ function summonControls(){
         spawner.requestSpawn(2);
     }else if(kb.presses("4")){
         spawner.requestSpawn(3);
+    }
+}
+
+
+//Should put this is its own class, inside 'UI.js'
+function uiSetup(){
+    // Creating Temp Buttons
+    //(x, y, w, h, label, c1, c2, textSize, minNum)
+    smallMinerBut =     new Button(100, 850, 200, 200, "Small Miner",       "red", "green", 20, 0);
+    bigMinerBut =       new Button(350, 850, 200, 200, "Big Miner",         "red", "green", 20, 1);
+    smallAttackerBut =  new Button(600, 850, 200, 200, "Small Attacker",    "red", "green", 20, 2);
+    bigAttackerBut =    new Button(850, 850, 200, 200, "Big Attacker",      "red", "green", 20, 3);
+}
+
+function uiDraw(){  
+    smallMinerBut.hover();
+    smallMinerBut.clicked();
+
+    bigMinerBut.hover();
+    bigMinerBut.clicked();
+
+    smallAttackerBut.hover();
+    smallAttackerBut.clicked();
+    
+    bigAttackerBut.hover();
+    bigAttackerBut.clicked();
+
+
+    if (kb.presses("m")){
+        menuOpen = !menuOpen;
+    }
+    
+    
+    if(menuOpen){
+        push();
+        fill("Chocolate");
+        rect(0, height - 250, 1920, 250);
+        smallMinerBut.display();
+        bigMinerBut.display();
+        smallAttackerBut.display();
+        bigAttackerBut.display();
+        pop();
     }
 }

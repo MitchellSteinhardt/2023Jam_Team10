@@ -2,7 +2,7 @@ class minionController{
     constructor(){
         this.minionGroup;
         this.resourceGroup;
-        this.resources = 100;
+        this.resources = 1000;
 
         this.enemyGroup;
     }
@@ -15,38 +15,65 @@ class minionController{
         this.resourceGroup = rGroup;
         this.minionGroup = new Group();
         this.enemyGroup = new Group();
+
+
+        this.createEnemy();
     }
 
     draw(){
         this.selectCheck();
         this.movement();
+
+
+        //debugging
+        textSize(15);
+        for(let i=0; i<this.enemyGroup.length; i++){
+            let x = this.enemyGroup[i].x;
+            let y = this.enemyGroup[i].y - 25;
+            text(i, x, y);
+        }
+
+        if(kb.presses("g")){
+            this.enemyGroup[0].remove();
+        }
     }
 
     selectCheck(){
-        //when right mouse is clicked set the selected items location to mouse location
-        if(mouse.presses("right")){
-            for(let i=0; i<this.minionGroup.length; i++){
-                /*if(this.minionGroup.type == "miner"){
+        //loops through all minions
+        for(let i=0; i<this.minionGroup.length; i++){
+            let minion = this.minionGroup[i];
+            //checks if minions are selected and when the right mouse button is clicked
+            if(mouse.presses("right") && minion.selected == true){
+                //checks what type the minion is based on avalible variables
+                if(minion.mineSpeed != null){ //doesnt work bc there is no type attached to them
+                    console.log("resource move");
+                    minion.mineTarget = null;
 
-                }else if(this.minionGroup.type == "attacker"){
-
-                }*/
-
-
-
-
-                if(this.minionGroup[i].selected == true){
-                    this.minionGroup[i].mineTarget = null;
-                    //console.log("move");
-                    this.minionGroup[i].locationX = mouseX;
-                    this.minionGroup[i].locationY = mouseY;
-
+                    //loops through all resources to see if any were clicked on
                     for(let k=0; k<this.resourceGroup.length; k++){
                         if(this.resourceGroup[k].mouse.presses("right")){
                             //console.log("resource selected");
-                            this.minionGroup[i].mineTarget = this.resourceGroup[k];
+                            minion.mineTarget = this.resourceGroup[k];
                         }
                     }
+
+                    minion.locationX = mouseX;
+                    minion.locationY = mouseY;
+                }else if(minion.attackDamage != null){
+                    console.log("attack move");
+                    minion.attackTarget = null;
+
+                    //loops through all enemies to see if any were clicked on
+                    for(let k=0; k<this.enemyGroup.length; k++){
+                        if(this.enemyGroup[k].mouse.presses("right")){
+                            //console.log("enemy selected");
+                            minion.attackTarget = this.enemyGroup[k];
+                            minion.lookingForEnemy = false;
+                        }
+                    }
+
+                    minion.locationX = mouseX;
+                    minion.locationY = mouseY;
                 }
             }
         }
@@ -72,7 +99,7 @@ class minionController{
                 //gets distance from attack target
                 let distance = dist(currentItem.x, currentItem.y, currentItem.attackTarget.x, currentItem.attackTarget.y);
                 //if close enough to attack target allow mining
-                if(distance > currentItem.attackTarget.d+10){
+                if(distance > currentItem.attackTarget.d+50){
                     currentItem.moveTowards(currentItem.attackTarget.x, currentItem.attackTarget.y, 0.05);
                 }else{
                     //console.log("attack");
@@ -108,6 +135,10 @@ class minionController{
         currentItem.countDown--;
     }
 
+    attackEnemy(){
+        console.log("HA TAKE THAT");
+    }
+
     attackTarget(currentItem){
         console.log("Attacking: ");
     }
@@ -118,6 +149,7 @@ class minionController{
     //just putting this here as a holder, should put it in its own UI class
     displayUI(){
         //gold count at top
+        fill("black");
         textSize(30);
         textAlign(CENTER, CENTER);
         text("Gold: " + this.resources, width/2, 30);
@@ -130,6 +162,21 @@ class minionController{
             text(this.resourceGroup[i].value, x, y);
         }
     }
+
+    createEnemy(){
+        for(let i=0; i<5; i++){
+            let newEnemy = new Sprite();
+            newEnemy.x = random(0, width);
+            newEnemy.y = random(0, height);
+            newEnemy.d = 20;
+            newEnemy.collider = "s";
+            newEnemy.color = "black";
+            newEnemy.health = 100;
+            
+            this.enemyGroup.push(newEnemy);
+        }
+    }
+
 }
 
 

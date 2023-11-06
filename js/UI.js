@@ -1,5 +1,5 @@
 class Button {
-    constructor(x, y, w, h, label, c1, c2, textSize) {
+    constructor(x, y, w, h, label, c1, c2, textSize, minNum) {
       this.x = x;
       this.y = y;
       this.w = w;
@@ -10,7 +10,7 @@ class Button {
       this.textColor = 255;
       this.textSize = textSize;
       this.isHovered = false;
-      this.isClicked = false;
+      this.minionNum = minNum;
     }
   
     display() {
@@ -42,55 +42,13 @@ class Button {
   
     clicked() {
       if (this.isHovered && mouse.pressed()) {
-        this.isClicked = true;
+        //this.isClicked = true;
+        spawner.requestSpawn(this.minionNum);
+        //spawner.requestSpawn(0);
       } else {
-        this.isClicked = false;
+        //this.isClicked = false;
       }
     }
-  }
-
-
-let menuOpen = true;
-
-function setup(){
-    new Canvas(1920,1080);
-
-    // Creating Temp Buttons
-    smallBoatButton = new Button(100, 850, 200, 200, "Small Boat", "red", "green", 20);
-    mediumBoatButton = new Button(350, 850, 200, 200, "Medium Boat", "red", "green", 20);
-    bigBoatButton = new Button(600, 850, 200, 200, "Big Boat", "red", "green", 20);
-}
-
-
-function draw(){
-    background("grey");
-
-    smallBoatButton.hover();
-    smallBoatButton.clicked();
-
-    mediumBoatButton.hover();
-    mediumBoatButton.clicked();
-
-    bigBoatButton.hover();
-    bigBoatButton.clicked();
-    
-
-
-    if (kb.presses("m")){
-        menuOpen = !menuOpen;
-    }
-    
-    
-    if(menuOpen){
-        fill("Chocolate");
-        rect(0, height - 250, 1920, 250);
-        smallBoatButton.display();
-        mediumBoatButton.display();
-        bigBoatButton.display();
-    }
-
-    
-
 }
 
 
