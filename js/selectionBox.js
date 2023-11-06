@@ -67,14 +67,19 @@ class selectionBox {
     }
 
     selectionCheck(){
-            //loops through all selectible items
+        //loops through all selectible items
         for(let i=0; i<this.minions.length; i++){
+            //checks if they're within the selection box area
             if(this.selectBox.overlapping(this.minions[i])){
                 this.minions[i].selected = true;
                 this.minions[i].color = "red";
             }else{
                 this.minions[i].selected = false;
-                this.minions[i].colour = "blue";
+                if(this.minions[i].mineSpeed != null){
+                    this.minions[i].color = "blue";
+                }else{
+                    this.minions[i].color = "yellow";
+                }
             }
         }
     }

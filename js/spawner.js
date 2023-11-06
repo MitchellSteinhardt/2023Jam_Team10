@@ -36,15 +36,18 @@ class spawnManager {
         //checks if theres enough gold for the minions
         if(minionMovement.resources >= currentRequest.cost){
             console.log("Request accepted");
+            //reduces gold by minion cost
+            minionMovement.resources-=currentRequest.cost;
+
             //checks what type of minion is being requeted
             //as different minion types need different variables
             if(currentRequest.type === "miner"){
-                //reduces gold by minion cost
-                minionMovement.resources-=currentRequest.cost;
-                //spawns minion
+                //spawns miner minion
                 this.spawnMiner(minionNumber);
             }else if(currentRequest.type === "attacker"){
-                console.log("wow violent");
+                //console.log("wow violent");
+                //spawns attacker minion
+                this.spawnAttacker(minionNumber);
             }
         }else{
             console.log("HA POOR");
@@ -62,20 +65,40 @@ class spawnManager {
         
         //sets variables from json file
         newMiner.d = this.minionsArray[num].dim;
-        newMiner.countDown = this.minionsArray[num].mineDelay;
+        newMiner.mineDelay = this.minionsArray[num].mineDelay
         newMiner.mineSpeed = this.minionsArray[num].mineSpeed;
-
-        //these could probably just be left as null and removed from json file
-        newMiner.locationX = this.minionsArray[num].locationX;
-        newMiner.locationY = this.minionsArray[num].locationY;
-        newMiner.mineTarget = this.minionsArray[num].mineTarget;
+        
+        //creates variables in sprite for later use
+        newMiner.locationX = null;
+        newMiner.locationY = null;
+        newMiner.mineTarget = null;
+        newMiner.countDown = newMiner.mineDelay;
         
         //adds new minion to the minion group in 'minionControls.js'
         minionMovement.minionGroup.push(newMiner);
     }
 
-    spawnAttacker(){
+    spawnAttacker(num){
+        //sets a random position around mothership to spawn
+        let ranX = random(-this.mothership.d/2, this.mothership.d/2);
+        let ranY = random(-this.mothership.d/2, this.mothership.d/2);
+        //creates new miner sprite
+        let newAttacker = new Sprite(this.mothership.x+ranX, this.mothership.y+ranY);
+        newAttacker.drag = 10;
+        newAttacker.color = "yellow";
+        
+        //sets variables from json file
+        newAttacker.d = this.minionsArray[num].dim;
+        newAttacker.attackDamage = this.minionsArray[num].attackDamage;
+        newAttacker.attackDelay = this.minionsArray[num].attackDelay;
 
+        //creates variables in sprite for later use
+        newAttacker.locationX = null;
+        newAttacker.locationY = null;
+        newAttacker.attackTarget = null;
+        newAttacker.countDown = newAttacker.attackDelay;
+        
+        //adds new minion to the minion group in 'minionControls.js'
+        minionMovement.minionGroup.push(newAttacker);
     }
-
 }
