@@ -14,7 +14,9 @@ function preload(){
 }
 
 function setup(){
-    new Canvas(800,800);
+    new Canvas(1920, 1080);   //Actual Size
+    //new Canvas(800, 800);   //Testing
+
     //declaring groups
     resourceGroup = new Group();
     
@@ -29,11 +31,6 @@ function setup(){
 
 function draw(){
     background(200);
-
-    //used to spawn new miners, will be replaced with button controls
-    if(kb.presses("d")){
-        minionMovement.minionGroup.push(spawner.spawnMiner());
-    }
 
     summonControls();
 
