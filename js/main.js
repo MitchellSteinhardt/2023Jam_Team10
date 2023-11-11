@@ -4,8 +4,8 @@
 let selectBox = new selectionBox();
 let spawner = new spawnManager();
 let minionMovement = new minionController();
+let enemyManager = new enemyController();
 let waveManager = new waveControls();
-//let shops = new Shops;    //This is removed as 'spawnManager' handles purchases
 
 //Groups
 let resourceGroup;
@@ -14,8 +14,12 @@ let resourceGroup;
 let menuOpen = false;
 let smallMinerBut, bigMinerBut, smallAttackerBut, bigAttackerBut;
 
+let wavesOn = false;
+
+
 function preload(){
     spawner.preload();
+    enemyManager.preload();
 }
 
 function setup(){
@@ -28,11 +32,8 @@ function setup(){
     //classes setup
     spawner.setup();
     minionMovement.setup(resourceGroup);
-    //shops.setup();
+    enemyManager.setup();
     
-    //creates gold desposits
-    createResources();
-
     uiSetup();
     waveManager.setup();
 }
@@ -40,6 +41,9 @@ function setup(){
 function draw(){
     //background(200);    //default
     background(16,103,114); //water
+
+    //creates gold desposits
+    respawnResources();
 
     summonControls();
 
@@ -51,14 +55,22 @@ function draw(){
     //displays gold UI
     minionMovement.displayUI();
 
-    //shops.draw();
+    //manages enemies
+    enemyManager.draw();
 
     uiDraw();
-    waveManager.draw();
+
+    if(kb.presses("p")){
+        wavesOn = !wavesOn;
+    }
+
+    if(wavesOn){
+        waveManager.draw();
+    }
 }
 
-function createResources(){
-    for(let i = 0; i<6; i++){
+function respawnResources(){
+    if(resourceGroup.length < 20){
         let newResource = new Sprite();
         newResource.d = 30;
         let gap = newResource.d/2;
@@ -124,6 +136,15 @@ function uiDraw(){
         bigMinerBut.display();
         smallAttackerBut.display();
         bigAttackerBut.display();
+        pop();
+    }
+
+    if(minionMovement.gameOver){
+        push();
+        textSize(150);
+        fill("white");
+        textAlign(CENTER, CENTER);
+        text("GAME OVER", width/2, height/2);
         pop();
     }
 }

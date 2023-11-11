@@ -1,3 +1,13 @@
+
+/* 
+*   NO NEED TO KEEP
+*   enemies have been recreated as sprites
+*   new code is in 'enemyControls.js'
+*/
+
+
+
+
 class ShipFactory {
   constructor() {
     this.mainShip = null;

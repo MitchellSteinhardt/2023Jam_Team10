@@ -6,7 +6,7 @@
 
         "cost": 50,
         "health": 100,
-        "speed": 10,
+        "speed": 0.5,
 
         "mineSpeed": 5,
         "mineDelay": 60
@@ -18,8 +18,8 @@
         "dim": 15,
 
         "cost": 200,
-        "health": 150,
-        "speed": 10,
+        "health": 100,
+        "speed": 0.6,
 
         "mineSpeed": 30,
         "mineDelay": 60
@@ -32,10 +32,10 @@
 
         "cost": 75,
         "health": 100,
-        "speed": 10,
+        "speed": 0.9,
 
-        "attackDamage": 20,
-        "attackDelay": 30
+        "attackDamage": 10,
+        "attackDelay": 60
     },
 
     "bigAttacker": {
@@ -45,9 +45,9 @@
 
         "cost": 250,
         "health": 200,
-        "speed": 10,
+        "speed": 0.7,
 
         "attackDamage": 20,
-        "attackDelay": 30
+        "attackDelay": 60
     }
 }

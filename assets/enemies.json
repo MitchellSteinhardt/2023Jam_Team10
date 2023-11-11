@@ -1,0 +1,49 @@
+{
+    "rowboat": {
+        "name": "Rowboat",
+        "type": "miner",
+        "dim": 10,
+
+        "health": 25,
+        "speed": 0.5,
+
+        "attackDamage": 5,
+        "attackDelay": 60
+    },
+
+    "sloop": {
+        "name": "Sloop",
+        "type": "miner",
+        "dim": 15,
+
+        "health": 100,
+        "speed": 0.6,
+
+        "attackDamage": 10,
+        "attackDelay": 60
+    },
+
+    "brigantine": {
+        "name": "Brigantine",
+        "type": "attacker",
+        "dim": 17,
+
+        "health": 150,
+        "speed": 0.9,
+
+        "attackDamage": 15,
+        "attackDelay": 60
+    },
+
+    "galleon": {
+        "name": "Galleon",
+        "type": "attacker",
+        "dim": 20,
+
+        "health": 200,
+        "speed": 0.7,
+
+        "attackDamage": 20,
+        "attackDelay": 60
+    }
+}

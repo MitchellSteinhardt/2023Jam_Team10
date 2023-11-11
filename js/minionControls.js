@@ -1,10 +1,10 @@
 class minionController{
     constructor(){
         this.minionGroup;
+        this.goodBulletGroup;
         this.resourceGroup;
-        this.resources = 1000;
-
-        this.enemyGroup;
+        this.resources = 100;
+        this.gameOver = false;
     }
 
     preload(){
@@ -14,28 +14,25 @@ class minionController{
     setup(rGroup){
         this.resourceGroup = rGroup;
         this.minionGroup = new Group();
-        this.enemyGroup = new Group();
-
-
-        this.createEnemy();
+        this.goodBulletGroup = new Group();
     }
 
     draw(){
         this.selectCheck();
         this.movement();
 
+        for(let i=0; i<this.minionGroup.length; i++){
+            if(frameCount % 60 == 0){
+                //checks if minion has been hit and if they should be dead
+                this.findStuff(this.minionGroup[i]);
+            }
 
-        //debugging
-        textSize(15);
-        for(let i=0; i<this.enemyGroup.length; i++){
-            let x = this.enemyGroup[i].x;
-            let y = this.enemyGroup[i].y - 25;
-            text(i, x, y);
+            this.hitCheck(this.minionGroup[i]);
+            this.deathCheck(this.minionGroup[i]);
         }
 
-        if(kb.presses("g")){
-            this.enemyGroup[0].remove();
-        }
+        this.hitCheck(spawner.mothership);
+        this.deathCheck(spawner.mothership);
     }
 
     selectCheck(){
@@ -45,9 +42,10 @@ class minionController{
             //checks if minions are selected and when the right mouse button is clicked
             if(mouse.presses("right") && minion.selected == true){
                 //checks what type the minion is based on avalible variables
-                if(minion.mineSpeed != null){ //doesnt work bc there is no type attached to them
+                if(minion.mineSpeed != null){
                     console.log("resource move");
                     minion.mineTarget = null;
+                    minion.lookingForResources = true;
 
                     //loops through all resources to see if any were clicked on
                     for(let k=0; k<this.resourceGroup.length; k++){
@@ -62,12 +60,13 @@ class minionController{
                 }else if(minion.attackDamage != null){
                     console.log("attack move");
                     minion.attackTarget = null;
+                    minion.lookingForEnemy = true;
 
                     //loops through all enemies to see if any were clicked on
-                    for(let k=0; k<this.enemyGroup.length; k++){
-                        if(this.enemyGroup[k].mouse.presses("right")){
+                    for(let k=0; k<enemyManager.enemyGroup.length; k++){
+                        if(enemyManager.enemyGroup[k].mouse.presses("right")){
                             //console.log("enemy selected");
-                            minion.attackTarget = this.enemyGroup[k];
+                            minion.attackTarget = enemyManager.enemyGroup[k];
                             minion.lookingForEnemy = false;
                         }
                     }
@@ -89,7 +88,7 @@ class minionController{
                 let distance = dist(currentItem.x, currentItem.y, currentItem.mineTarget.x, currentItem.mineTarget.y);
                 //if close enough to mine target allow mining
                 if(distance > currentItem.mineTarget.d+10){
-                    currentItem.moveTowards(currentItem.mineTarget.x, currentItem.mineTarget.y, 0.05);
+                    currentItem.moveTo(currentItem.mineTarget.x, currentItem.mineTarget.y, currentItem.speedTwoElectricBoogalo);
                 }else{
                     //console.log("arrived at resource");
                     this.mineResources(currentItem);
@@ -100,17 +99,17 @@ class minionController{
                 let distance = dist(currentItem.x, currentItem.y, currentItem.attackTarget.x, currentItem.attackTarget.y);
                 //if close enough to attack target allow mining
                 if(distance > currentItem.attackTarget.d+50){
-                    currentItem.moveTowards(currentItem.attackTarget.x, currentItem.attackTarget.y, 0.05);
+                    currentItem.moveTo(currentItem.attackTarget.x, currentItem.attackTarget.y, currentItem.speedTwoElectricBoogalo);
                 }else{
                     //console.log("attack");
-                    this.attackEnemy(currentItem);
+                    this.attackEnemy(currentItem, this.goodBulletGroup);
                 }
 
             }else if(currentItem.locationX != null){    //checks if there is a location set to move to
                 //ensures they don't have to get to location to prevent overlapping
                 let distance = dist(currentItem.x, currentItem.y, currentItem.locationX, currentItem.locationY);
                 if(distance > 30){
-                    currentItem.moveTowards(currentItem.locationX, currentItem.locationY, 0.05);
+                    currentItem.moveTo(currentItem.locationX, currentItem.locationY, currentItem.speedTwoElectricBoogalo);
                 }
             }
         }
@@ -130,19 +129,117 @@ class minionController{
         }
     
         if(currentItem.mineTarget.value <= 0){
+            currentItem.lookingForResources = true;
             currentItem.mineTarget.remove();
         }
         currentItem.countDown--;
     }
 
-    attackEnemy(){
-        console.log("HA TAKE THAT");
+    attackEnemy(currentItem, goToGroup, overrideTarget){
+        if(currentItem.countDown <= 0){
+            //attack code
+            console.log("BANG BANG");
+
+            let newBullet = new Sprite(currentItem.x, currentItem.y);
+            newBullet.d = 7;
+            newBullet.color = "pink";
+            newBullet.layer = 1;
+            newBullet.damage = currentItem.attackDamage;
+            newBullet.life = 300;
+
+            let fireHere;
+            if(overrideTarget != null){
+                fireHere = overrideTarget;
+            }else{
+                fireHere = currentItem.attackTarget;
+            }
+            newBullet.direction = newBullet.angleTo(fireHere);
+            newBullet.speed = 2;
+
+
+            //selection box breaks when setting overlaps allSprites
+            newBullet.overlaps(this.minionGroup);
+            newBullet.overlaps(this.goodBulletGroup);
+            newBullet.overlaps(this.resourceGroup);
+            newBullet.overlaps(enemyManager.enemyGroup);
+            newBullet.overlaps(enemyManager.badBulletGroup);
+            newBullet.overlaps(spawner.mothership);
+
+            goToGroup.push(newBullet);
+
+            currentItem.countDown = currentItem.attackDelay;
+        }else{
+            currentItem.countDown--;
+        }
     }
 
-    attackTarget(currentItem){
-        console.log("Attacking: ");
+    findStuff(minion){
+        if(minion.lookingForEnemy === true){
+            for(let i=0; i<enemyManager.enemyGroup.length; i++){
+                let enemy = enemyManager.enemyGroup[i];
+                let distToMinion = dist(minion.x, minion.y, enemy.x, enemy.y);
+
+                if(distToMinion < 80){
+                    //console.log("attacking attacker");
+                    minion.attackTarget = enemy;
+                    minion.lookingForEnemy = false;
+                }
+            }
+        }
+        if(minion.lookingForResources === true){
+            for(let i=0; i<this.resourceGroup.length; i++){
+                let resource = this.resourceGroup[i];
+                let distToResource = dist(minion.x, minion.y, resource.x, resource.y);
+
+                if(distToResource < 80){
+                    //console.log("attacking attacker");
+                    minion.mineTarget = resource;
+                    minion.lookingForResources = false;
+                }
+            }
+        }
     }
 
+    
+    /*
+    *   Hit and death
+    */
+
+    //checks if any of the enemy bullets hit any minion
+    hitCheck(minion){
+        for(let i = 0; i<enemyManager.badBulletGroup.length; i++){
+            if(enemyManager.badBulletGroup[i].overlaps(minion)){
+                minion.health -= enemyManager.badBulletGroup[i].damage;
+                enemyManager.badBulletGroup[i].remove();
+            }
+        }
+    }
+
+    //checks if enemy still has health, if not kills them and resets all attackers with them as a target
+    deathCheck(minion){
+        if(minion.health <= 0){
+            for(let k=0; k<enemyManager.enemyGroup.length; k++){
+                if(enemyManager.enemyGroup[k].attackTarget === minion){
+                    enemyManager.enemyGroup[k].attackTarget = null;
+                    enemyManager.enemyGroup[k].lookingForMinion = true;
+                }
+            }
+            this.explosion(minion);
+            minion.remove();
+
+            if(minion === spawner.mothership){
+                this.gameOver = true;
+            }
+        }
+    }
+
+    //creates a cosmetic explosion
+    explosion(location){
+        let explosion = new Sprite(location.x, location.y, 30);
+        explosion.color = "red";
+        explosion.life = 60;
+        explosion.collider = "n";
+    }
 
 
     
@@ -162,63 +259,4 @@ class minionController{
             text(this.resourceGroup[i].value, x, y);
         }
     }
-
-    createEnemy(){
-        for(let i=0; i<5; i++){
-            let newEnemy = new Sprite();
-            newEnemy.x = random(0, width);
-            newEnemy.y = random(0, height);
-            newEnemy.d = 20;
-            newEnemy.collider = "s";
-            newEnemy.color = "black";
-            newEnemy.health = 100;
-            
-            this.enemyGroup.push(newEnemy);
-        }
-    }
-
 }
-
-
-/* DUMP
-
-//checks if there is any location set to move to
-if(currentItem.locationX != null){
-    //checks if there is variable for the mine target
-    if(currentItem.mineTarget != null){
-        //gets distance from mine target
-        let distance = dist(currentItem.x, currentItem.y, currentItem.mineTarget.x, currentItem.mineTarget.y);
-        //if close enough to mine target allow mining
-        if(distance > currentItem.mineTarget.d+10){
-            currentItem.moveTowards(currentItem.mineTarget.x, currentItem.mineTarget.y, 0.05);
-        }else{
-            //console.log("arrived at resource");
-            this.mineResources(currentItem);
-        }
-    }else{
-        //ensures they don't have to get to location to prevent overlapping
-        let distance = dist(currentItem.x, currentItem.y, currentItem.locationX, currentItem.locationY);
-        if(distance > 30){
-            currentItem.moveTowards(currentItem.locationX, currentItem.locationY, 0.05);
-        }
-    }
-}
-
-if(this.minionGroup[i].selected == true){
-    this.minionGroup[i].mineTarget = null;
-    //console.log("move");
-    this.minionGroup[i].locationX = mouseX;
-    this.minionGroup[i].locationY = mouseY;
-
-    for(let k=0; k<this.resourceGroup.length; k++){
-        if(this.resourceGroup[k].mouse.presses("right")){
-            //console.log("resource selected");
-            this.minionGroup[i].mineTarget = this.resourceGroup[k];
-        }
-    }
-}
-
-
-
-
-*/

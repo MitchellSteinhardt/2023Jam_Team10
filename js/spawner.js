@@ -16,6 +16,7 @@ class spawnManager {
         this.mothership.drag = 10;
         this.mothership.colour = "purple";
         this.mothership.collider = "s";
+        this.mothership.health = 500;
 
         //adds minions from minions.json to an array
         this.minionsArray.push(this.minionsJSON.smallMiner);
@@ -29,28 +30,30 @@ class spawnManager {
     }
 
     requestSpawn(minionNumber){
-        //sets variable for requested minion
-        let currentRequest = this.minionsArray[minionNumber];
-        console.log("Requeted Summon: " + currentRequest.name);
-
-        //checks if theres enough gold for the minions
-        if(minionMovement.resources >= currentRequest.cost){
-            console.log("Request accepted");
-            //reduces gold by minion cost
-            minionMovement.resources-=currentRequest.cost;
-
-            //checks what type of minion is being requeted
-            //as different minion types need different variables
-            if(currentRequest.type === "miner"){
-                //spawns miner minion
-                this.spawnMiner(minionNumber);
-            }else if(currentRequest.type === "attacker"){
-                //console.log("wow violent");
-                //spawns attacker minion
-                this.spawnAttacker(minionNumber);
+        if(minionMovement.gameOver === false){
+            //sets variable for requested minion
+            let currentRequest = this.minionsArray[minionNumber];
+            console.log("Requeted Summon: " + currentRequest.name);
+    
+            //checks if theres enough gold for the minions
+            if(minionMovement.resources >= currentRequest.cost){
+                console.log("Request accepted");
+                //reduces gold by minion cost
+                minionMovement.resources-=currentRequest.cost;
+    
+                //checks what type of minion is being requeted
+                //as different minion types need different variables
+                if(currentRequest.type === "miner"){
+                    //spawns miner minion
+                    this.spawnMiner(minionNumber);
+                }else if(currentRequest.type === "attacker"){
+                    //console.log("wow violent");
+                    //spawns attacker minion
+                    this.spawnAttacker(minionNumber);
+                }
+            }else{
+                console.log("HA POOR");
             }
-        }else{
-            console.log("HA POOR");
         }
     }
 
@@ -62,16 +65,21 @@ class spawnManager {
         let newMiner = new Sprite(this.mothership.x+ranX, this.mothership.y+ranY);
         newMiner.drag = 10;
         newMiner.color = "blue";
+        newMiner.layer = 2;
         
         //sets variables from json file
         newMiner.d = this.minionsArray[num].dim;
         newMiner.mineDelay = this.minionsArray[num].mineDelay
         newMiner.mineSpeed = this.minionsArray[num].mineSpeed;
+        newMiner.health = this.minionsArray[num].health;
+        newMiner.speedTwoElectricBoogalo = this.minionsArray[num].speed;
+        //speedTwoElectricBoogalo... i need help
         
         //creates variables in sprite for later use
         newMiner.locationX = null;
         newMiner.locationY = null;
         newMiner.mineTarget = null;
+        newMiner.lookingForResources = true;
         newMiner.countDown = newMiner.mineDelay;
         
         //adds new minion to the minion group in 'minionControls.js'
@@ -86,11 +94,14 @@ class spawnManager {
         let newAttacker = new Sprite(this.mothership.x+ranX, this.mothership.y+ranY);
         newAttacker.drag = 10;
         newAttacker.color = "yellow";
+        newAttacker.layer = 2;
         
         //sets variables from json file
         newAttacker.d = this.minionsArray[num].dim;
         newAttacker.attackDamage = this.minionsArray[num].attackDamage;
         newAttacker.attackDelay = this.minionsArray[num].attackDelay;
+        newAttacker.health = this.minionsArray[num].health;
+        newAttacker.speedTwoElectricBoogalo = this.minionsArray[num].speed;
 
         //creates variables in sprite for later use
         newAttacker.locationX = null;
