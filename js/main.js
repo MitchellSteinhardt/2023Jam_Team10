@@ -8,14 +8,28 @@ let waveManager = new waveControls();
 //let shops = new Shops;    //This is removed as 'spawnManager' handles purchases
 
 //Groups
-let resourceGroup;
+ let resourceGroup;
+ let newResource;
 
 //UI variables
 let menuOpen = false;
 let smallMinerBut, bigMinerBut, smallAttackerBut, bigAttackerBut;
 
+let sunkenShip1;
+let sunkenShip2;
+let sunkenShip3;
+let sunkenShip4;
+let sunkenShip5;
+let sunkenShip6;
+
 function preload(){
     spawner.preload();
+    sunkenShip1 = loadImage("assets/img/sunken_ship1.png")
+    sunkenShip2 = loadImage("assets/img/sunken_ship2.png")
+    sunkenShip3 = loadImage("assets/img/sunken_ship3.png")
+    sunkenShip4 = loadImage("assets/img/sunken_ship4.png")
+    sunkenShip5 = loadImage("assets/img/sunken_ship5.png")
+    sunkenShip6 = loadImage("assets/img/sunken_ship6.png")
 }
 
 function setup(){
@@ -28,6 +42,7 @@ function setup(){
     //classes setup
     spawner.setup();
     minionMovement.setup(resourceGroup);
+
     //shops.setup();
     
     //creates gold desposits
@@ -35,12 +50,13 @@ function setup(){
 
     uiSetup();
     waveManager.setup();
+
 }
 
 function draw(){
     //background(200);    //default
     background(16,103,114); //water
-
+    
     summonControls();
 
     //draws green selection box
@@ -52,24 +68,34 @@ function draw(){
     minionMovement.displayUI();
 
     //shops.draw();
-
+    
     uiDraw();
     waveManager.draw();
+    
+    resourceGroup.debug = mouse.pressing();
+    for(let i=0; i<resourceGroup.length ;i++){
+        resourceGroup[i].vel.x= random(-2,2);
+        resourceGroup[i].vel.y= random(-1,1);   
+    }
 }
 
 function createResources(){
+    let sunkenShipArray = [sunkenShip1, sunkenShip2, sunkenShip3,sunkenShip4, sunkenShip5, sunkenShip6]
+
     for(let i = 0; i<6; i++){
-        let newResource = new Sprite();
-        newResource.d = 30;
-        let gap = newResource.d/2;
+        newResource = new Sprite();
+        newResource.w = 800;
+        newResource.h = 400;
+        let gap = newResource.w/8;
         newResource.x = random(gap, width - gap);
         newResource.y = random(60, height - gap);
-        newResource.color = "green";
-        newResource.collider = "s";
-
+        //newResource.color = "green";
+        newResource.img = sunkenShipArray[i];
+        newResource.scale = 0.1;
+        newResource.collider = "k";
         //sets gold desposits value
         newResource.value = 500;
-
+           
         resourceGroup.push(newResource);
     }
 }
