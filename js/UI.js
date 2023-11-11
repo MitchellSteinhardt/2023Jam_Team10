@@ -42,11 +42,7 @@ class Button {
   
     clicked() {
       if (this.isHovered && mouse.pressed()) {
-        //this.isClicked = true;
         spawner.requestSpawn(this.minionNum);
-        //spawner.requestSpawn(0);
-      } else {
-        //this.isClicked = false;
       }
     }
 }

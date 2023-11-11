@@ -6,7 +6,7 @@
 
         "cost": 50,
         "health": 100,
-        "speed": 0.5,
+        "speed": 0.6,
 
         "mineSpeed": 5,
         "mineDelay": 60
@@ -19,10 +19,10 @@
 
         "cost": 200,
         "health": 100,
-        "speed": 0.6,
+        "speed": 0.7,
 
         "mineSpeed": 30,
-        "mineDelay": 60
+        "mineDelay": 45
     },
 
     "smallAttacker": {
@@ -32,7 +32,7 @@
 
         "cost": 75,
         "health": 100,
-        "speed": 0.9,
+        "speed": 1,
 
         "attackDamage": 10,
         "attackDelay": 60
@@ -45,7 +45,7 @@
 
         "cost": 250,
         "health": 200,
-        "speed": 0.7,
+        "speed": 0.8,
 
         "attackDamage": 20,
         "attackDelay": 60

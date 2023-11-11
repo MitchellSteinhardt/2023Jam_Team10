@@ -1,7 +1,7 @@
 class enemyController {
     constructor(){
         this.canSpawn = false;
-        this.maxEnemies = 0;
+        this.maxEnemies = 5;
         this.enemyGroup;
         this.enemyJSON;
         this.enemyArray = [];
@@ -25,7 +25,7 @@ class enemyController {
 
     draw(){
         if(minionMovement.gameOver === false){
-            this.enemyNumberUI();
+            //this.enemyNumberUI(); //debugging
             this.keyCheck();    //replace eventually with spawning mechanics
     
             //runs spawn logic and spawn controller
@@ -49,8 +49,8 @@ class enemyController {
     */
 
     spawnLogic(){
-        //prevents spawning for first 15 seconds of the game
-        if(frameCount % (60*15) == 0 && !this.canSpawn){
+        //prevents spawning for first 30 seconds of the game
+        if(frameCount % (60*enemySpawnDelay) == 0 && !this.canSpawn){
             console.log("enemies ready");
             this.canSpawn = true;
         }
@@ -68,7 +68,7 @@ class enemyController {
     }
 
     spawnController(){
-        if(frameCount % (60*10) == 0){
+        if(frameCount % (60*15) == 0){
             console.log("enemies spawning");
             while(this.enemyGroup.length < this.maxEnemies){
                 //decides what ship to spawn via % chance
@@ -193,6 +193,14 @@ class enemyController {
 
             if(enemy.attackTarget != null){
                 enemy.lookingForMinion = false;
+            }
+        }
+
+        if(enemy.attackTarget != null){
+            let distToTarget = dist(enemy.x, enemy.y, enemy.attackTarget.x, enemy.attackTarget.y);
+            if(distToTarget > 150){
+                enemy.attackTarget = null;
+                enemy.lookingForMinion = true;
             }
         }
     }

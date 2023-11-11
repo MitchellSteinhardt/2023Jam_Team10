@@ -1,22 +1,33 @@
 class spawnManager {
     constructor(){
         this.mothership;
+        this.mothershipImg;
         this.minionsJSON;
         this.minionsArray = [];
+        this.minionImage = [];
     }
 
     preload(){
         //sets variable for minions.json
         this.minionsJSON = loadJSON("./assets/minions.json");
+
+        this.minionImage.push(loadImage("./assets/img/smallminer.png"));
+        this.minionImage.push(loadImage("./assets/img/bigminer.png"));
+
+        this.mothershipImg = loadImage("./assets/img/mothership.png");
     }
 
     setup(){
         //creates mothership sprite, will be changed eventually, just a placeholder for variables
-        this.mothership = new Sprite(width/2, height/2, 30);
+        this.mothership = new Sprite(width/2, height/2);
+        this.mothership.img = this.mothershipImg;
+        this.mothership.scale = 0.4;
+        this.mothership.d = 100;
         this.mothership.drag = 10;
         this.mothership.colour = "purple";
         this.mothership.collider = "s";
         this.mothership.health = 500;
+        //this.mothership.debug = true;
 
         //adds minions from minions.json to an array
         this.minionsArray.push(this.minionsJSON.smallMiner);
@@ -68,12 +79,16 @@ class spawnManager {
         newMiner.layer = 2;
         
         //sets variables from json file
-        newMiner.d = this.minionsArray[num].dim;
+        newMiner.img = this.minionImage[num];
+        newMiner.scale = 2*(this.minionsArray[num].dim/100);
+        
+        newMiner.d = this.minionsArray[num].dim*2;
         newMiner.mineDelay = this.minionsArray[num].mineDelay
         newMiner.mineSpeed = this.minionsArray[num].mineSpeed;
         newMiner.health = this.minionsArray[num].health;
         newMiner.speedTwoElectricBoogalo = this.minionsArray[num].speed;
         //speedTwoElectricBoogalo... i need help
+        //newMiner.debug = true;
         
         //creates variables in sprite for later use
         newMiner.locationX = null;

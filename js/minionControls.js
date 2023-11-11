@@ -43,7 +43,7 @@ class minionController{
             if(mouse.presses("right") && minion.selected == true){
                 //checks what type the minion is based on avalible variables
                 if(minion.mineSpeed != null){
-                    console.log("resource move");
+                    //console.log("resource move");
                     minion.mineTarget = null;
                     minion.lookingForResources = true;
 
@@ -58,7 +58,7 @@ class minionController{
                     minion.locationX = mouseX;
                     minion.locationY = mouseY;
                 }else if(minion.attackDamage != null){
-                    console.log("attack move");
+                    //console.log("attack move");
                     minion.attackTarget = null;
                     minion.lookingForEnemy = true;
 
@@ -75,6 +75,14 @@ class minionController{
                     minion.locationY = mouseY;
                 }
             }
+
+            if(minion.selected == true){
+                //shows selection
+                push();
+                noFill();
+                circle(minion.x, minion.y, minion.d*2);
+                pop();
+            }
         }
     }
 
@@ -82,6 +90,8 @@ class minionController{
         //continues moving items to designated location
         for(let i=0; i<this.minionGroup.length; i++){
             let currentItem = this.minionGroup[i];
+
+            currentItem.rotation = currentItem.direction+90;
 
             if(currentItem.mineTarget != null){         //checks if there is a target to mine
                 //gets distance from mine target
@@ -138,7 +148,7 @@ class minionController{
     attackEnemy(currentItem, goToGroup, overrideTarget){
         if(currentItem.countDown <= 0){
             //attack code
-            console.log("BANG BANG");
+            //console.log("BANG BANG");
 
             let newBullet = new Sprite(currentItem.x, currentItem.y);
             newBullet.d = 7;
@@ -251,6 +261,10 @@ class minionController{
         textAlign(CENTER, CENTER);
         text("Gold: " + this.resources, width/2, 30);
     
+        //this.displayResourceValues(); //debugging
+    }
+
+    displayResourceValues(){
         //values over resource piles
         textSize(15);
         for(let i=0; i<this.resourceGroup.length; i++){
