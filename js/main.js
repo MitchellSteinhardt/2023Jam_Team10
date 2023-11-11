@@ -8,7 +8,8 @@ let enemyManager = new enemyController();
 let waveManager = new waveControls();
 
 //Groups
-let resourceGroup;
+ let resourceGroup;
+ let newResource;
 
 //UI variables
 let menuOpen = false;
@@ -36,6 +37,7 @@ function setup(){
     
     uiSetup();
     waveManager.setup();
+
 }
 
 function draw(){
@@ -76,12 +78,13 @@ function respawnResources(){
         let gap = newResource.d/2;
         newResource.x = random(gap, width - gap);
         newResource.y = random(60, height - gap);
-        newResource.color = "green";
-        newResource.collider = "s";
-
+        //newResource.color = "green";
+        newResource.img = sunkenShipArray[i];
+        newResource.scale = 0.1;
+        newResource.collider = "k";
         //sets gold desposits value
         newResource.value = 500;
-
+           
         resourceGroup.push(newResource);
     }
 }
