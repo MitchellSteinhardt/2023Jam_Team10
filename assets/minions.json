@@ -8,8 +8,8 @@
         "health": 100,
         "speed": 0.6,
 
-        "mineSpeed": 5,
-        "mineDelay": 60
+        "mineSpeed": 10,
+        "mineDelay": 45
     },
 
     "bigMiner": {
@@ -18,11 +18,11 @@
         "dim": 15,
 
         "cost": 200,
-        "health": 100,
+        "health": 150,
         "speed": 0.7,
 
         "mineSpeed": 30,
-        "mineDelay": 45
+        "mineDelay": 25
     },
 
     "smallAttacker": {
@@ -31,11 +31,11 @@
         "dim": 17,
 
         "cost": 75,
-        "health": 100,
-        "speed": 1,
+        "health": 150,
+        "speed": 1.1,
 
-        "attackDamage": 10,
-        "attackDelay": 60
+        "attackDamage": 30,
+        "attackDelay": 40
     },
 
     "bigAttacker": {
@@ -44,10 +44,10 @@
         "dim": 20,
 
         "cost": 250,
-        "health": 200,
-        "speed": 0.8,
+        "health": 300,
+        "speed": 0.9,
 
-        "attackDamage": 20,
-        "attackDelay": 40
+        "attackDamage": 50,
+        "attackDelay": 20
     }
 }

@@ -75,7 +75,7 @@ class enemyController {
     }
 
     spawnController(){
-        if(frameCount % (60*15) == 0){
+        if(frameCount % (60*30) == 0){
             console.log("enemies spawning");
             while(this.enemyGroup.length < this.maxEnemies){
                 //decides what ship to spawn via % chance
