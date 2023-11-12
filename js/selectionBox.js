@@ -36,6 +36,7 @@ class selectionBox {
             this.selectBox.collider = "k";
 
             this.selectBox.overlaps(this.minions);
+            this.selectBox.overlaps(enemyManager.enemyGroup);
 
             //sets inital clicked spot
             this.selectBoxX = mouseX;
