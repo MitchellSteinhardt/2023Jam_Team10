@@ -29,7 +29,7 @@ class spawnManager {
         this.mothership.drag = 10;
         this.mothership.colour = "purple";
         this.mothership.collider = "s";
-        this.mothership.health = 500;
+        this.mothership.health = 1000;
         //this.mothership.debug = true;
 
         //adds minions from minions.json to an array
