@@ -13,6 +13,9 @@ class spawnManager {
 
         this.minionImage.push(loadImage("./assets/img/smallminer.png"));
         this.minionImage.push(loadImage("./assets/img/bigminer.png"));
+        this.minionImage.push(loadImage("./assets/img/smallattacker.png"));
+        this.minionImage.push(loadImage("./assets/img/bigattacker.png"));
+
 
         this.mothershipImg = loadImage("./assets/img/mothership.png");
     }
@@ -78,10 +81,11 @@ class spawnManager {
         newMiner.color = "blue";
         newMiner.layer = 2;
         
-        //sets variables from json file
+        //sets image
         newMiner.img = this.minionImage[num];
         newMiner.scale = 2*(this.minionsArray[num].dim/100);
         
+        //sets variables from json file
         newMiner.d = this.minionsArray[num].dim*2;
         newMiner.mineDelay = this.minionsArray[num].mineDelay
         newMiner.mineSpeed = this.minionsArray[num].mineSpeed;
@@ -111,12 +115,17 @@ class spawnManager {
         newAttacker.color = "yellow";
         newAttacker.layer = 2;
         
+        //sets image
+        newAttacker.img = this.minionImage[num];
+        newAttacker.scale = 2*(this.minionsArray[num].dim/100);
+
         //sets variables from json file
-        newAttacker.d = this.minionsArray[num].dim;
+        newAttacker.d = this.minionsArray[num].dim*2;
         newAttacker.attackDamage = this.minionsArray[num].attackDamage;
         newAttacker.attackDelay = this.minionsArray[num].attackDelay;
         newAttacker.health = this.minionsArray[num].health;
         newAttacker.speedTwoElectricBoogalo = this.minionsArray[num].speed;
+        //newAttacker.debug = true;
 
         //creates variables in sprite for later use
         newAttacker.locationX = null;

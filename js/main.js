@@ -153,10 +153,18 @@ function uiDraw(){
     //toggle info
     push();
     textAlign(LEFT, TOP);
-    stroke(0);
+    fill(0);
     textSize(20);
     text("'M' to toggle menu", 10, 10);
     text("'P' to toggle background", 10, 35);
+    pop();
+
+    //mothership health
+    push();
+    textAlign(RIGHT, TOP);
+    fill(0);
+    textSize(40);
+    text("Mothership Health: "+ spawner.mothership.health, width-20, 20);
     pop();
     
     

@@ -5,7 +5,7 @@
         "dim": 10,
 
         "health": 25,
-        "speed": 0.5,
+        "speed": 0.3,
 
         "attackDamage": 5,
         "attackDelay": 60
@@ -16,8 +16,8 @@
         "type": "miner",
         "dim": 15,
 
-        "health": 100,
-        "speed": 0.6,
+        "health": 75,
+        "speed": 0.4,
 
         "attackDamage": 10,
         "attackDelay": 60
@@ -28,8 +28,8 @@
         "type": "attacker",
         "dim": 17,
 
-        "health": 150,
-        "speed": 0.9,
+        "health": 100,
+        "speed": 0.6,
 
         "attackDamage": 15,
         "attackDelay": 60
@@ -40,8 +40,8 @@
         "type": "attacker",
         "dim": 20,
 
-        "health": 200,
-        "speed": 0.7,
+        "health": 150,
+        "speed": 0.4,
 
         "attackDamage": 20,
         "attackDelay": 60

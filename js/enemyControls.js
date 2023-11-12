@@ -5,6 +5,7 @@ class enemyController {
         this.enemyGroup;
         this.enemyJSON;
         this.enemyArray = [];
+        this.enemyImage = [];
         this.badBulletGroup;
     }
 
@@ -21,6 +22,12 @@ class enemyController {
         this.enemyArray.push(this.enemyJSON.sloop);
         this.enemyArray.push(this.enemyJSON.brigantine);
         this.enemyArray.push(this.enemyJSON.galleon);
+
+
+        this.enemyImage.push(loadImage("./assets/img/redsmallminer.png"));
+        this.enemyImage.push(loadImage("./assets/img/redbigminer.png"));
+        this.enemyImage.push(loadImage("./assets/img/redsmallattacker.png"));
+        this.enemyImage.push(loadImage("./assets/img/redbigattacker.png"));
     }
 
     draw(){
@@ -103,7 +110,11 @@ class enemyController {
         newEnemy.layer = 2;
         newEnemy.drag = 10;
 
-        newEnemy.d = this.enemyArray[num].dim;
+        //sets image
+        newEnemy.img = this.enemyImage[num];
+        newEnemy.scale = 2*(this.enemyArray[num].dim/100);
+
+        newEnemy.d = this.enemyArray[num].dim*2;
         newEnemy.name = this.enemyArray[num].name;
         newEnemy.speedTwoElectricBoogalo = abs(this.enemyArray[num].speed);
         newEnemy.health = this.enemyArray[num].health;
@@ -111,6 +122,7 @@ class enemyController {
         newEnemy.attackDelay = this.enemyArray[num].attackDelay;
         newEnemy.attackTarget = null;
         newEnemy.lookingForMinion = true;
+        //newEnemy.debug = true;
 
         newEnemy.countDown = newEnemy.attackDelay;
         
@@ -206,6 +218,7 @@ class enemyController {
     }
 
     movementAndAttack(enemy){
+        enemy.rotation = enemy.direction + 90;
         
         if(enemy.attackTarget != null){
             //console.log("IMMA ATTACK");

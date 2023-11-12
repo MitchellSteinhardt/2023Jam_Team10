@@ -48,6 +48,6 @@
         "speed": 0.8,
 
         "attackDamage": 20,
-        "attackDelay": 60
+        "attackDelay": 40
     }
 }
